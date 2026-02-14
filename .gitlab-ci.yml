@@ -1,0 +1,11 @@
+deploy:
+  stage: deploy
+  tags:
+    - shell
+  script:
+    - git config --global --add safe.directory /mnt/user/appdata/mirai-automations
+    - cd /mnt/user/appdata/mirai-automations && git remote set-url origin http://gitlab-ci-token:${CI_JOB_TOKEN}@192.168.0.10:9080/tabgroup/mirai-automations.git
+    - cd /mnt/user/appdata/mirai-automations && git pull origin main
+    - curl -sf --unix-socket /var/run/docker.sock -X POST "http://localhost/v1.24/containers/mirai/restart?t=5"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
