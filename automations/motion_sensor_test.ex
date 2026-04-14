@@ -13,7 +13,10 @@ defmodule Mirai.Automations.MotionSensorTest do
         },
         state
       ) do
+    if between_sunset_and_sunrise?(sunset_offset: -60) do
       call_service("light.turn_on", %{entity_id: @kitchen_lights, brightness_pct: 100})
+    end
+
     {:ok, state}
   end
 
@@ -21,7 +24,7 @@ defmodule Mirai.Automations.MotionSensorTest do
         %{entity_id: "binary_sensor.motion_sensor_test_presence", new_state: %{state: "off"}},
         state
       ) do
-      call_service("light.turn_off", %{area_id: "kitchen"})
+    call_service("light.turn_off", %{area_id: "kitchen"})
     {:ok, state}
   end
 
