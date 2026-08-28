@@ -1,11 +1,33 @@
+variables:
+  MIRAI_DEPLOY_PATH: /mnt/user/appdata/mirai-automations
+  MIRAI_DEPLOY_HOST: PRIVATE_IP_REDACTED:9080
+  MIRAI_DEPLOY_REPO: tabgroup/mirai-automations
+
 deploy:
   stage: deploy
   tags:
     - shell
   script:
-    - git config --global --add safe.directory /mnt/user/appdata/mirai-automations
-    - cd /mnt/user/appdata/mirai-automations && git remote set-url origin http://gitlab-ci-token:${CI_JOB_TOKEN}@PRIVATE_IP_REDACTED:9080/tabgroup/mirai-automations.git
-    - cd /mnt/user/appdata/mirai-automations && git pull origin main
-    - curl -sf --unix-socket /var/run/docker.sock -X POST "http://localhost/v1.24/containers/mirai/restart?t=5"
+    - |
+      clean_remote="http://${MIRAI_DEPLOY_HOST}/${MIRAI_DEPLOY_REPO}.git"
+      authenticated_remote="http://gitlab-ci-token:${CI_JOB_TOKEN}@"
+      authenticated_remote="${authenticated_remote}${MIRAI_DEPLOY_HOST}/"
+      authenticated_remote="${authenticated_remote}${MIRAI_DEPLOY_REPO}.git"
+
+      git -c safe.directory="${MIRAI_DEPLOY_PATH}" \
+        -C "${MIRAI_DEPLOY_PATH}" \
+        remote set-url origin "${clean_remote}"
+      git -c safe.directory="${MIRAI_DEPLOY_PATH}" \
+        -C "${MIRAI_DEPLOY_PATH}" \
+        -c remote.origin.url="${authenticated_remote}" \
+        pull --ff-only origin main
+    - |
+      curl \
+        --fail-with-body \
+        --silent \
+        --show-error \
+        --unix-socket /var/run/docker.sock \
+        --request POST \
+        "http://localhost/containers/mirai/restart?t=5"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
