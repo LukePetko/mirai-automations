@@ -1,6 +1,5 @@
 variables:
   MIRAI_DEPLOY_PATH: /mnt/user/appdata/mirai-automations
-  MIRAI_DEPLOY_HOST: PRIVATE_IP_REDACTED:9080
   MIRAI_DEPLOY_REPO: tabgroup/mirai-automations
 
 deploy:
