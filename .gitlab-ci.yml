@@ -18,7 +18,11 @@ deploy:
         remote set-url origin "${clean_remote}"
       git -c safe.directory="${MIRAI_DEPLOY_PATH}" \
         -C "${MIRAI_DEPLOY_PATH}" \
-        pull --ff-only "${authenticated_remote}" main
+        fetch --prune "${authenticated_remote}" \
+        "+refs/heads/main:refs/remotes/origin/main"
+      git -c safe.directory="${MIRAI_DEPLOY_PATH}" \
+        -C "${MIRAI_DEPLOY_PATH}" \
+        checkout -B main refs/remotes/origin/main
     - |
       curl \
         --fail-with-body \
