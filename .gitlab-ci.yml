@@ -23,6 +23,13 @@ deploy:
       git -c safe.directory="${MIRAI_DEPLOY_PATH}" \
         -C "${MIRAI_DEPLOY_PATH}" \
         checkout -B main refs/remotes/origin/main
+
+      jq \
+        --null-input \
+        --arg branch "${CI_COMMIT_BRANCH}" \
+        --arg commit "${CI_COMMIT_SHA}" \
+        '{branch: $branch, commit: $commit}' \
+        > "${MIRAI_DEPLOY_PATH}/automations/.mirai-deployment.json"
     - |
       curl \
         --fail-with-body \
