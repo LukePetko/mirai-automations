@@ -24,12 +24,15 @@ deploy:
         -C "${MIRAI_DEPLOY_PATH}" \
         checkout -B main refs/remotes/origin/main
 
-      jq \
-        --null-input \
-        --arg branch "${CI_COMMIT_BRANCH}" \
-        --arg commit "${CI_COMMIT_SHA}" \
-        '{branch: $branch, commit: $commit}' \
-        > "${MIRAI_DEPLOY_PATH}/automations/.mirai-deployment.json"
+      deployment_metadata="${MIRAI_DEPLOY_PATH}/automations/.mirai-deployment.json"
+      deployment_metadata_tmp="${deployment_metadata}.${CI_JOB_ID}.tmp"
+
+      printf \
+        '{"branch":"%s","commit":"%s"}\n' \
+        "${CI_COMMIT_BRANCH}" \
+        "${CI_COMMIT_SHA}" \
+        > "${deployment_metadata_tmp}"
+      mv --force "${deployment_metadata_tmp}" "${deployment_metadata}"
     - |
       curl \
         --fail-with-body \
