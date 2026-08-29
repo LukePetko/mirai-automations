@@ -1,6 +1,7 @@
 /_build/
 /deps/
 /erl_crash.dump
+/automations/.mirai-deployment.json
 .elixir_ls/
 .idea/
 .vscode/
