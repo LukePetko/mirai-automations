@@ -1,24 +1,36 @@
 defmodule Mirai.Automations.Relay.BathroomVent do
   @moduledoc """
-  Immediately toggles the bathroom vent relay back after a physical press.
-  Only action events are handled, not changes to the relay's output state.
+  Controls the bathroom vent from bathroom TIMMERFLOTTE humidity updates.
+  Turns on at 60% or above and off at 55% or below. Between those thresholds,
+  or when the sensor reading is invalid, leaves the vent unchanged.
   """
 
   use Mirai.Automation
 
-  @relay_event "event.bathroom_vent_relay_action"
-  @relay "switch.bathroom_vent_relay"
+  @humidity "sensor.timmerflotte_temp_hmd_sensor_humidity"
+  @vent "switch.bathroom_vent_relay"
 
   @impl Mirai.Automation
   def handle_event(
         %{
           type: :state_change,
-          entity_id: @relay_event,
-          attributes: %{"event_type" => "toggle"}
+          entity_id: @humidity,
+          new_state: %{state: reading}
         },
         state
-      ) do
-    call_service("switch.toggle", %{entity_id: @relay})
+      )
+      when is_binary(reading) do
+    case Float.parse(reading) do
+      {humidity, ""} when humidity >= 60 and humidity <= 100 ->
+        call_service("switch.turn_on", %{entity_id: @vent})
+
+      {humidity, ""} when humidity >= 0 and humidity <= 55 ->
+        call_service("switch.turn_off", %{entity_id: @vent})
+
+      _ ->
+        :ok
+    end
+
     {:ok, state}
   end
 
