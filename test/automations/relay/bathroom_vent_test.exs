@@ -6,8 +6,8 @@ defmodule Mirai.Automations.Relay.BathroomVentTest do
 
   @humidity "sensor.timmerflotte_temp_hmd_sensor_humidity"
   @vent "switch.bathroom_vent_relay"
-  @manual %{auto_started: false}
-  @automatic %{auto_started: true}
+  @manual %{auto_started: false, run_timer: nil, timed_out: false}
+  @automatic %{auto_started: true, run_timer: nil, timed_out: false}
 
   setup do
     # Capture commands and provide the real StateCache read interface without HA.
@@ -19,7 +19,10 @@ defmodule Mirai.Automations.Relay.BathroomVentTest do
 
   test "turns an off vent on at or above 60 percent and claims ownership" do
     for humidity <- ["60", "60.0", "60.01", "75.5", "100"] do
-      assert {:ok, @automatic} = BathroomVent.handle_event(humidity_event(humidity), @manual)
+      assert {:ok, %{auto_started: true, run_timer: timer, timed_out: false}} =
+               BathroomVent.handle_event(humidity_event(humidity), @manual)
+
+      assert_received {:"$gen_cast", {:schedule_timer, ^timer, 1_200_000}}
       assert_command("turn_on")
     end
   end
@@ -147,17 +150,19 @@ defmodule Mirai.Automations.Relay.BathroomVentTest do
     start_supervised!({Phoenix.PubSub, name: Mirai.PubSub})
     pid = start_supervised!(BathroomVent)
 
-    assert deliver(pid, humidity_event("60")) == @automatic
+    automatic = deliver(pid, humidity_event("60"))
+    assert automatic.auto_started
+    assert automatic.run_timer
     assert_command("turn_on")
     cache_vent("on")
-    assert deliver(pid, vent_event("on")) == @automatic
+    assert deliver(pid, vent_event("on")) == automatic
 
     for humidity <- ["65", "59", "55.01"] do
-      assert deliver(pid, humidity_event(humidity)) == @automatic
+      assert deliver(pid, humidity_event(humidity)) == automatic
       refute_received {:"$gen_cast", _}
     end
 
-    assert deliver(pid, humidity_event("55")) == @automatic
+    assert deliver(pid, humidity_event("55")) == automatic
     assert_command("turn_off")
     cache_vent("off")
     assert deliver(pid, vent_event("off")) == @manual
