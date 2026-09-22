@@ -13,12 +13,12 @@ defmodule Mirai.Automations.Button.NikiTest do
     :ok
   end
 
-  test "toggles the white light once for each consecutive single press" do
+  test "toggles the white light and notifies Luke once for each consecutive single press" do
     state = %{preserved: true}
 
     for timestamp <- ["2026-09-22T06:44:29.440+00:00", "2026-09-22T06:44:30.500+00:00"] do
       assert {:ok, ^state} = Niki.handle_event(button_event("single", timestamp), state)
-      assert_toggle()
+      assert_toggle_and_notification()
     end
   end
 
@@ -58,7 +58,7 @@ defmodule Mirai.Automations.Button.NikiTest do
 
       # Flush delivery before checking that exactly one command was emitted.
       :sys.get_state(pid)
-      assert_toggle()
+      assert_toggle_and_notification()
     end
   end
 
@@ -82,7 +82,7 @@ defmodule Mirai.Automations.Button.NikiTest do
     })
   end
 
-  defp assert_toggle do
+  defp assert_toggle_and_notification do
     assert_received {:"$gen_cast",
                      {:send,
                       %{
@@ -91,6 +91,18 @@ defmodule Mirai.Automations.Button.NikiTest do
                         service: "toggle",
                         target: %{entity_id: @light},
                         service_data: %{}
+                      }}}
+
+    assert_received {:"$gen_cast",
+                     {:send,
+                      %{
+                        type: "call_service",
+                        domain: "notify",
+                        service: "mobile_app_lukes_iphone_16_pro",
+                        service_data: %{
+                          title: "Niki button",
+                          message: "Niki's button was pressed."
+                        }
                       }}}
 
     refute_received {:"$gen_cast", _}
