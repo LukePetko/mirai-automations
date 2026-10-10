@@ -1,0 +1,18 @@
+{
+	"name": "mirai-automations",
+	"module": "index.ts",
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"private": true,
+	"scripts": {
+		"entity-codegen": "mirai-entity-codegen"
+	},
+	"type": "module",
+	"dependencies": {
+		"mirai": "link:mirai"
+	}
+}
