@@ -2,7 +2,7 @@ import { defineAutomation } from "mirai";
 
 export default defineAutomation({
 	require: ["homeassistant", "kv"],
-	f: function test(e, ctx) {
+	f: async function test(e, ctx) {
 		if (
 			e.entity_id === "sensor.0x84ba20fffe97b036_action" &&
 			e.new_state?.state === "on"
@@ -12,7 +12,7 @@ export default defineAutomation({
 				"!!!",
 				ctx.homeassistant.getState("light.living_room_tv_led"),
 			);
-			ctx.homeassistant.callService(
+			await ctx.homeassistant.callService(
 				"light",
 				"toggle",
 				{
