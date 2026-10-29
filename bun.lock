@@ -20,7 +20,7 @@
 
     "bun-types": ["bun-types@1.4.2", "", { "dependencies": { "@types/node": "*" } }, "sha512-bxV1FgK7yBIzjRe5zBozIM4Bem11ZJcCXSrjWRG3YWLt8yFDePu4cLjpebO8OvPeIE9trbyPF4fuj3Cia4Fj3w=="],
 
-    "mirai": ["mirai@link:mirai", { "bin": { "mirai-entity-codegen": "./src/codegen/entities.ts" } }],
+    "mirai": ["mirai@link:mirai", { "bin": { "mirai-entity-codegen": "./src/codegen/entities.ts", "mirai-service-codegen": "./src/codegen/services.ts", "mirai-service-data-codegen": "./src/codegen/serviceData.ts" } }],
 
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 

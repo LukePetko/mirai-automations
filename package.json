@@ -9,7 +9,9 @@
 	},
 	"private": true,
 	"scripts": {
-		"entity-codegen": "mirai-entity-codegen"
+		"entity-codegen": "mirai-entity-codegen",
+		"service-codegen": "mirai-service-codegen",
+		"service-data-codegen": "mirai-service-data-codegen"
 	},
 	"type": "module",
 	"dependencies": {
