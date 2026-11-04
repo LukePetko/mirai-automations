@@ -2,7 +2,7 @@ variables:
   MIRAI_DEPLOY_PATH: /mnt/user/appdata/mirai-automations-ts
   MIRAI_DEPLOY_REPO: tabgroup/mirai-automations
   MIRAI_DEPLOY_BRANCH: typescript
-  MIRAI_CONTAINER: mirai-ts
+  MIRAI_CONTAINER: mirai
 
 deploy:
   stage: deploy
