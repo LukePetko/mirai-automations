@@ -1,5 +1,15 @@
-# Mirai Automations
+# mirai-automations
 
-This is a collection of automations for [Mirai](https://github.com/lukepetko/mirai) that I use in my flat.
+To install dependencies:
 
-This repo also serves as an example of Mirai's automations.
+```bash
+bun install
+```
+
+To run:
+
+```bash
+bun run index.ts
+```
+
+This project was created using `bun init` in bun v1.3.0. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
