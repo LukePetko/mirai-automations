@@ -5,6 +5,8 @@ export default async function livingRoomFocus({
 	kv,
 }: AutomationContext<"homeassistant" | "kv">) {
 	console.log("[mirai] setting living room scene to focus");
+	await kv.set("living_room:scene", "focus");
+
 	await homeassistant.callService(
 		"light",
 		"turn_on",
@@ -73,6 +75,4 @@ export default async function livingRoomFocus({
 			},
 		);
 	}
-
-	await kv.set("living_room:scene", "focus");
 }
