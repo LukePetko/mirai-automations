@@ -42,7 +42,7 @@ export default async function livingRoomFocus({
 		},
 		{
 			brightness_pct: 40,
-			color_temp_kelvin: 2700,
+			color_temp_kelvin: 3200,
 			transition: 1,
 		},
 	);
