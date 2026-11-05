@@ -10,20 +10,21 @@ export default defineAutomation({
 			e.entity_id === "event.niki_button_action" &&
 			e.new_state?.attributes.event_type === "single";
 
-		if (!relay && !niki)
-			await Promise.all([
-				ctx.homeassistant.callService(
-					"light",
-					"toggle",
-					{ entity_id: "light.stockholm" },
-					{ color_temp_kelvin: 2000, brightness_pct: 10 },
-				),
-				ctx.homeassistant.callService(
-					"light",
-					"toggle",
-					{ entity_id: "light.living_room_side" },
-					{ color_temp_kelvin: 2000, brightness_pct: 40 },
-				),
-			]);
+		if (!relay && !niki) return;
+
+		await Promise.all([
+			ctx.homeassistant.callService(
+				"light",
+				"toggle",
+				{ entity_id: "light.stockholm" },
+				{ color_temp_kelvin: 2000, brightness_pct: 10 },
+			),
+			ctx.homeassistant.callService(
+				"light",
+				"toggle",
+				{ entity_id: "light.living_room_side" },
+				{ color_temp_kelvin: 2000, brightness_pct: 40 },
+			),
+		]);
 	},
 });
