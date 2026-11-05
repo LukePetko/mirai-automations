@@ -1,7 +1,6 @@
 variables:
   MIRAI_DEPLOY_PATH: /mnt/user/appdata/mirai-automations-ts
   MIRAI_DEPLOY_REPO: tabgroup/mirai-automations
-  MIRAI_DEPLOY_BRANCH: typescript
   MIRAI_CONTAINER: mirai
 
 deploy:
@@ -21,10 +20,10 @@ deploy:
       git -c safe.directory="${MIRAI_DEPLOY_PATH}" \
         -C "${MIRAI_DEPLOY_PATH}" \
         fetch --prune "${authenticated_remote}" \
-        "+refs/heads/${MIRAI_DEPLOY_BRANCH}:refs/remotes/origin/${MIRAI_DEPLOY_BRANCH}"
+        "+refs/heads/${CI_COMMIT_BRANCH}:refs/remotes/origin/${CI_COMMIT_BRANCH}"
       git -c safe.directory="${MIRAI_DEPLOY_PATH}" \
         -C "${MIRAI_DEPLOY_PATH}" \
-        checkout -B "${MIRAI_DEPLOY_BRANCH}" "refs/remotes/origin/${MIRAI_DEPLOY_BRANCH}"
+        checkout -B "${CI_COMMIT_BRANCH}" "refs/remotes/origin/${CI_COMMIT_BRANCH}"
 
       deployment_metadata="${MIRAI_DEPLOY_PATH}/automations/.mirai-deployment.json"
       deployment_metadata_tmp="${deployment_metadata}.${CI_JOB_ID}.tmp"
@@ -44,4 +43,4 @@ deploy:
         --request POST \
         "http://localhost/containers/${MIRAI_CONTAINER}/restart?t=5"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "typescript"'
+    - if: '$CI_COMMIT_BRANCH'
