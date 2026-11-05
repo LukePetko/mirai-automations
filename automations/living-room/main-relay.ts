@@ -1,13 +1,23 @@
 import { defineAutomation } from "mirai";
 
 export default defineAutomation({
-	require: ["homeassistant"],
+	require: ["homeassistant", "kv"],
 	f: async function livingRoomMainRelay(e, ctx) {
-		if (e.entity_id !== "event.living_room_main_relay_action") return;
-		if (e.new_state?.attributes.event_type !== "toggle") return;
+		const relay =
+			e.entity_id === "event.living_room_main_relay_action" &&
+			e.new_state?.attributes.event_type === "toggle";
+		const niki =
+			e.entity_id === "event.niki_button_action" &&
+			e.new_state?.attributes.event_type === "single";
 
-		await ctx.homeassistant.callService("light", "toggle", {
-			entity_id: "light.living_room_main",
-		});
+		if (!relay && !niki) return;
+
+		const currentState = ctx.kv.get<string>("living_room_state");
+
+		console.log(currentState);
+
+		// await ctx.homeassistant.callService("light", "toggle", {
+		// 	entity_id: "light.living_room_main",
+		// });
 	},
 });
