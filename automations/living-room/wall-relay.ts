@@ -16,7 +16,7 @@ export default defineAutomation({
 
 		const livingRoomScene = await ctx.kv.get<string>("living_room:scene");
 
-		if (livingRoomScene === "focus") livingRoomOff(ctx);
+		if (livingRoomScene === "movie") livingRoomOff(ctx);
 		else await livingRoomMovie(ctx);
 	},
 });
