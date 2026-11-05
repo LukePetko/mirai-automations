@@ -13,6 +13,7 @@ export default async function livingRoomOff({
 				"light.dining_room_lights",
 				"light.living_room_side",
 				"light.stockholm",
+				"light.living_room_tv_led",
 			],
 		},
 		{ transition: 1 },

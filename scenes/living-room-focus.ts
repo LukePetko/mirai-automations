@@ -41,7 +41,7 @@ export default async function livingRoomFocus({
 			entity_id: ["light.living_room_tv_led"],
 		},
 		{
-			brightness_pct: 40,
+			brightness_pct: 75,
 			color_temp_kelvin: 3200,
 			transition: 1,
 		},
