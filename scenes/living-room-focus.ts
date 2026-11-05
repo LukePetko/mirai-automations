@@ -24,7 +24,24 @@ export default async function livingRoomFocus({
 			entity_id: ["light.living_room_side", "light.stockholm"],
 		},
 		{
-			brightness_pct: 50,
+			brightness_pct: 45,
+			color_temp_kelvin: 2500,
+			transition: 1,
+		},
+	);
+
+	await homeassistant.callService("switch", "turn_off", {
+		entity_id: "switch.first_led_hardware_instance_component_usb_capture",
+	});
+
+	await homeassistant.callService(
+		"light",
+		"turn_on",
+		{
+			entity_id: ["light.living_room_tv_led"],
+		},
+		{
+			brightness_pct: 40,
 			color_temp_kelvin: 2500,
 			transition: 1,
 		},
