@@ -1,5 +1,6 @@
 import { defineAutomation } from "mirai";
 import livingRoomMovie from "../../scenes/living-room-movie";
+import livingRoomOff from "../../scenes/living-room-off";
 
 export default defineAutomation({
 	require: ["homeassistant", "kv"],
@@ -13,21 +14,9 @@ export default defineAutomation({
 
 		if (!relay && !niki) return;
 
-		livingRoomMovie(ctx);
+		const livingRoomScene = await ctx.kv.get<string>("living_room:scene");
 
-		// await Promise.all([
-		// 	ctx.homeassistant.callService(
-		// 		"light",
-		// 		"toggle",
-		// 		{ entity_id: "light.stockholm" },
-		// 		{ color_temp_kelvin: 2000, brightness_pct: 10 },
-		// 	),
-		// 	ctx.homeassistant.callService(
-		// 		"light",
-		// 		"toggle",
-		// 		{ entity_id: "light.living_room_side" },
-		// 		{ color_temp_kelvin: 2000, brightness_pct: 40 },
-		// 	),
-		// ]);
+		if (livingRoomScene === "focus") livingRoomOff(ctx);
+		else await livingRoomMovie(ctx);
 	},
 });
