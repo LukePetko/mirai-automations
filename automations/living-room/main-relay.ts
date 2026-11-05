@@ -14,7 +14,9 @@ export default defineAutomation({
 
 		if (!relay && !niki) return;
 
-		const livingRoomScene = await ctx.kv.get<string>("living_room:state");
+		const livingRoomScene = await ctx.kv.get<string>("living_room:scene");
+
+		console.log(livingRoomScene);
 
 		if (livingRoomScene === "focus") livingRoomOff(ctx);
 		else await livingRoomFocus(ctx);
