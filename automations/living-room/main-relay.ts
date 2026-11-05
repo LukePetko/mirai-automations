@@ -12,11 +12,9 @@ export default defineAutomation({
 			e.entity_id === "event.niki_button_action" &&
 			e.new_state?.attributes.event_type === "single";
 
-		if (!relay && !niki) return;
+		if (!relay) return;
 
 		const livingRoomScene = await ctx.kv.get<string>("living_room:scene");
-
-		console.log(livingRoomScene);
 
 		if (livingRoomScene === "focus") livingRoomOff(ctx);
 		else await livingRoomFocus(ctx);
