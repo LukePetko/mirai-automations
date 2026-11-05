@@ -8,9 +8,6 @@ export default defineAutomation({
 		const relay =
 			e.entity_id === "event.living_room_main_relay_action" &&
 			e.new_state?.attributes.event_type === "toggle";
-		const niki =
-			e.entity_id === "event.niki_button_action" &&
-			e.new_state?.attributes.event_type === "single";
 
 		if (!relay) return;
 

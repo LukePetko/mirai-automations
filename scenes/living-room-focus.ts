@@ -29,9 +29,6 @@ export default async function livingRoomFocus({
 			brightness_pct: 75,
 			color_temp_kelvin: 3200,
 		},
-		"switch.first_led_hardware_instance_component_usb_capture": {
-			state: "off",
-		},
 	};
 
 	if (diningRoomScene !== "focus") {
