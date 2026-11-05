@@ -12,6 +12,10 @@ export default defineAutomation({
 
 		if (!relay && !niki) return;
 
+		await ctx.kv.set(
+			"living_room_state",
+			Math.floor(Math.random() * 3).toString(),
+		);
 		const currentState = await ctx.kv.get<string>("living_room_state");
 
 		console.log(currentState);
