@@ -5,6 +5,8 @@ export default async function livingRoomOff({
 	kv,
 }: AutomationContext<"homeassistant" | "kv">) {
 	console.log("[mirai] setting living room scene to off");
+	await kv.set("living_room:scene", "off");
+
 	await homeassistant.callService(
 		"light",
 		"turn_off",
@@ -19,6 +21,4 @@ export default async function livingRoomOff({
 		},
 		{ transition: 1 },
 	);
-
-	await kv.set("living_room:scene", "off");
 }
