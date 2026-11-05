@@ -1,4 +1,6 @@
 import { defineAutomation } from "mirai";
+import livingRoomFocus from "../../scenes/living-room-focus";
+import livingRoomOff from "../../scenes/living-room-off";
 
 export default defineAutomation({
 	require: ["homeassistant", "kv"],
@@ -12,16 +14,9 @@ export default defineAutomation({
 
 		if (!relay && !niki) return;
 
-		await ctx.kv.set(
-			"living_room_state",
-			Math.floor(Math.random() * 3).toString(),
-		);
-		const currentState = await ctx.kv.get<string>("living_room_state");
+		const livingRoomScene = await ctx.kv.get<string>("living_room:state");
 
-		console.log(currentState);
-
-		// await ctx.homeassistant.callService("light", "toggle", {
-		// 	entity_id: "light.living_room_main",
-		// });
+		if (livingRoomScene === "focus") livingRoomOff(ctx);
+		else await livingRoomFocus(ctx);
 	},
 });
