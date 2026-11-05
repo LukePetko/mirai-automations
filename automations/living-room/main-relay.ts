@@ -12,7 +12,7 @@ export default defineAutomation({
 
 		if (!relay && !niki) return;
 
-		const currentState = ctx.kv.get<string>("living_room_state");
+		const currentState = await ctx.kv.get<string>("living_room_state");
 
 		console.log(currentState);
 
