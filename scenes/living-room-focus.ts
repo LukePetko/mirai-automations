@@ -12,7 +12,7 @@ export default async function livingRoomFocus({
 		},
 		{
 			brightness_pct: 75,
-			color_temp_kelvin: 2700,
+			color_temp_kelvin: 1900,
 			transition: 1,
 		},
 	);
@@ -24,8 +24,8 @@ export default async function livingRoomFocus({
 			entity_id: ["light.living_room_side", "light.stockholm"],
 		},
 		{
-			brightness_pct: 60,
-			color_temp_kelvin: 2700,
+			brightness_pct: 50,
+			color_temp_kelvin: 1900,
 			transition: 1,
 		},
 	);
@@ -37,11 +37,11 @@ export default async function livingRoomFocus({
 			"light",
 			"turn_on",
 			{
-				entity_id: ["light.dining_room_lights"],
+				entity_id: ["light.dining_room_lamp"],
 			},
 			{
-				brightness_pct: 50,
-				color_temp_kelvin: 2700,
+				brightness_pct: 30,
+				color_temp_kelvin: 1900,
 				transition: 1,
 			},
 		);

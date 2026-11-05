@@ -10,7 +10,7 @@ export default async function livingRoomOff({
 		{
 			entity_id: [
 				"light.living_room_main",
-				"light.dining_room_lamp",
+				"light.dining_room_lights",
 				"light.living_room_side",
 				"light.stockholm",
 			],
