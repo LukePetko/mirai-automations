@@ -1,13 +1,25 @@
 import { defineAutomation } from "mirai";
+import officeFocus from "../../scenes/office/focus";
+import officeOff from "../../scenes/office/off";
 
 export default defineAutomation({
-	require: ["homeassistant"],
+	require: ["homeassistant", "kv"],
 	f: async function officeRelay(e, ctx) {
-		if (e.entity_id !== "event.office_relay_action") return;
-		if (e.new_state?.attributes.event_type !== "toggle") return;
+		const relay =
+			e.entity_id === "event.office_relay_action" &&
+			e.new_state?.attributes.event_type === "toggle";
 
-		await ctx.homeassistant.callService("light", "toggle", {
-			entity_id: "light.office_top_light_white",
-		});
+		if (!relay) return;
+
+		const officeState = await ctx.kv.get("office:scene");
+
+		switch (officeState) {
+			case "focus":
+				officeFocus(ctx);
+				return;
+			case "off":
+			default:
+				officeOff(ctx);
+		}
 	},
 });
