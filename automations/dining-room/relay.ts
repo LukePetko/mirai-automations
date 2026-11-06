@@ -19,19 +19,24 @@ export default defineAutomation({
 				"light",
 				"turn_on",
 				{ entity_id: "light.dining_room_lights" },
-				{ brightness_pct: 30 },
+				{ brightness_pct: 30, transition: 1 },
 			);
 		} else if (light?.state === "off" || (focus && near(brightness, 77))) {
 			await ctx.homeassistant.callService(
 				"light",
 				"turn_on",
 				{ entity_id: "light.dining_room_lights" },
-				{ brightness_pct: 80 },
+				{ brightness_pct: 80, transition: 1 },
 			);
 		} else {
-			await ctx.homeassistant.callService("light", "turn_off", {
-				entity_id: "light.dining_room_lights",
-			});
+			await ctx.homeassistant.callService(
+				"light",
+				"turn_off",
+				{
+					entity_id: "light.dining_room_lights",
+				},
+				{ transition: 1 },
+			);
 		}
 	},
 });
