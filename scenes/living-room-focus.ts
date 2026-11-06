@@ -1,4 +1,5 @@
 import type { AutomationContext } from "mirai";
+import { near } from "../helpers/near";
 
 export default async function livingRoomFocus({
 	homeassistant,
@@ -6,7 +7,8 @@ export default async function livingRoomFocus({
 }: AutomationContext<"homeassistant" | "kv">) {
 	console.log("[mirai] setting living room scene to focus");
 	await kv.set("living_room:scene", "focus");
-	const diningRoomScene = await kv.get<string>("dining_room:scene");
+	const isDiningRoomOn =
+		homeassistant.getState("light.dining_room_lights")?.state === "on";
 
 	const entities: Record<string, Record<string, unknown>> = {
 		"light.living_room_main": {
@@ -31,7 +33,7 @@ export default async function livingRoomFocus({
 		},
 	};
 
-	if (diningRoomScene !== "focus") {
+	if (!isDiningRoomOn) {
 		entities["light.dining_room_lights"] = {
 			state: "on",
 			brightness_pct: 30,

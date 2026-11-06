@@ -21,7 +21,7 @@ export default defineAutomation({
 				{ entity_id: "light.dining_room_lights" },
 				{ brightness_pct: 40 },
 			);
-		} else if (light?.state === "off" || (focus && near(brightness, 102))) {
+		} else if (light?.state === "off" || (focus && near(brightness, 77))) {
 			await ctx.homeassistant.callService(
 				"light",
 				"turn_on",
