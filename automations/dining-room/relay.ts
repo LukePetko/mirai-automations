@@ -1,5 +1,5 @@
 import { defineAutomation } from "mirai";
-import livingRoomMovie from "../../scenes/living-room-movie";
+import { near } from "../../helpers/near";
 
 export default defineAutomation({
 	require: ["homeassistant", "kv"],
@@ -10,27 +10,28 @@ export default defineAutomation({
 
 		if (!relay) return;
 
-		const livingRoomScene = await ctx.kv.get<string>("living_room:scene");
-		const currentDiningRoomScene = ctx.homeassistant.getState(
-			"light.dining_room_light_1",
-		);
+		const focus = (await ctx.kv.get<string>("living_room:scene")) === "focus";
+		const light = ctx.homeassistant.getState("light.dining_room_lights");
+		const brightness = light?.attributes.brightness;
 
-		console.log(currentDiningRoomScene);
-
-		if (
-			livingRoomScene === "focus" &&
-			currentDiningRoomScene?.attributes.brightness
-		) {
-		}
-		await ctx.homeassistant.callService(
-			"light",
-			"toggle",
-			{
+		if (focus && near(brightness, 204)) {
+			await ctx.homeassistant.callService(
+				"light",
+				"turn_on",
+				{ entity_id: "light.dining_room_lights" },
+				{ brightness_pct: 40 },
+			);
+		} else if (light?.state === "off" || (focus && near(brightness, 102))) {
+			await ctx.homeassistant.callService(
+				"light",
+				"turn_on",
+				{ entity_id: "light.dining_room_lights" },
+				{ brightness_pct: 80 },
+			);
+		} else {
+			await ctx.homeassistant.callService("light", "turn_off", {
 				entity_id: "light.dining_room_lights",
-			},
-			{
-				brightness_pct: 80,
-			},
-		);
+			});
+		}
 	},
 });
