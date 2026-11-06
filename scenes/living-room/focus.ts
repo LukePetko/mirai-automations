@@ -1,4 +1,4 @@
-import type { AutomationContext } from "mirai";
+import type { AutomationContext, SceneEntities } from "mirai";
 
 export default async function livingRoomFocus({
 	homeassistant,
@@ -9,7 +9,7 @@ export default async function livingRoomFocus({
 	const isDiningRoomOn =
 		homeassistant.getState("light.dining_room_lights")?.state === "on";
 
-	const entities: Record<string, Record<string, unknown>> = {
+	const entities: SceneEntities = {
 		"light.living_room_main": {
 			state: "on",
 			brightness: 191,

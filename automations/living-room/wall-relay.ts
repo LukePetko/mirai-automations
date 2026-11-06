@@ -1,6 +1,6 @@
 import { defineAutomation } from "mirai";
-import livingRoomMovie from "../../scenes/living-room-movie";
-import livingRoomOff from "../../scenes/living-room-off";
+import livingRoomMovie from "../../scenes/living-room/movie";
+import livingRoomOff from "../../scenes/living-room/off";
 
 export default defineAutomation({
 	require: ["homeassistant", "kv"],

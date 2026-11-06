@@ -1,5 +1,5 @@
 import type { AutomationContext } from "mirai";
-import { movieLighting } from "../helpers/movieLighting";
+import { movieLighting } from "../../helpers/movieLighting";
 
 export default async function livingRoomMovie({
 	homeassistant,
