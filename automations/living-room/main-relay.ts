@@ -1,13 +1,19 @@
 import { defineAutomation } from "mirai";
+import livingRoomFocus from "../../scenes/living-room-focus";
+import livingRoomOff from "../../scenes/living-room-off";
 
 export default defineAutomation({
-	require: ["homeassistant"],
+	require: ["homeassistant", "kv"],
 	f: async function livingRoomMainRelay(e, ctx) {
-		if (e.entity_id !== "event.living_room_main_relay_action") return;
-		if (e.new_state?.attributes.event_type !== "toggle") return;
+		const relay =
+			e.entity_id === "event.living_room_main_relay_action" &&
+			e.new_state?.attributes.event_type === "toggle";
 
-		await ctx.homeassistant.callService("light", "toggle", {
-			entity_id: "light.living_room_main",
-		});
+		if (!relay) return;
+
+		const livingRoomScene = await ctx.kv.get<string>("living_room:scene");
+
+		if (livingRoomScene === "focus") livingRoomOff(ctx);
+		else await livingRoomFocus(ctx);
 	},
 });
