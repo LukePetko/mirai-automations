@@ -4,7 +4,7 @@ export default async function officeOff({
 	homeassistant,
 	kv,
 }: AutomationContext<"homeassistant" | "kv">) {
-	console.log("[mirai] setting office scene to focus");
+	console.log("[mirai] setting office scene to off");
 	await kv.set("office:scene", "off");
 
 	const entities: SceneEntities = {

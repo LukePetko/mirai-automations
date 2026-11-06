@@ -15,11 +15,11 @@ export default defineAutomation({
 
 		switch (officeState) {
 			case "focus":
-				officeFocus(ctx);
+				officeOff(ctx);
 				return;
 			case "off":
 			default:
-				officeOff(ctx);
+				officeFocus(ctx);
 		}
 	},
 });
