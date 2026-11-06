@@ -12,12 +12,15 @@ export default defineAutomation({
 
 		const livingRoomScene = await ctx.kv.get<string>("living_room:scene");
 		const currentDiningRoomScene = ctx.homeassistant.getState(
-			"light.dining_room_lights",
+			"light.dining_room_light_1",
 		);
 
 		console.log(currentDiningRoomScene);
 
-		if (livingRoomScene === "focus" && currentDiningRoomScene?.state) {
+		if (
+			livingRoomScene === "focus" &&
+			currentDiningRoomScene?.attributes.brightness
+		) {
 		}
 		await ctx.homeassistant.callService(
 			"light",
