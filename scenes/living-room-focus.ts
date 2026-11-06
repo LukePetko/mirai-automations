@@ -1,5 +1,4 @@
 import type { AutomationContext } from "mirai";
-import { near } from "../helpers/near";
 
 export default async function livingRoomFocus({
 	homeassistant,
@@ -13,22 +12,22 @@ export default async function livingRoomFocus({
 	const entities: Record<string, Record<string, unknown>> = {
 		"light.living_room_main": {
 			state: "on",
-			brightness_pct: 75,
+			brightness: 191,
 			color_temp_kelvin: 2500,
 		},
 		"light.living_room_side": {
 			state: "on",
-			brightness_pct: 30,
+			brightness: 77,
 			color_temp_kelvin: 2500,
 		},
 		"light.stockholm": {
 			state: "on",
-			brightness_pct: 20,
+			brightness: 51,
 			color_temp_kelvin: 2500,
 		},
 		"light.living_room_tv_led": {
 			state: "on",
-			brightness_pct: 75,
+			brightness: 191,
 			color_temp_kelvin: 3200,
 		},
 	};
@@ -36,7 +35,7 @@ export default async function livingRoomFocus({
 	if (!isDiningRoomOn) {
 		entities["light.dining_room_lights"] = {
 			state: "on",
-			brightness_pct: 30,
+			brightness: 77,
 			color_temp_kelvin: 2500,
 		};
 	}
