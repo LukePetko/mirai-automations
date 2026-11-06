@@ -10,7 +10,7 @@ export default async function officeFocus({
 	const entities: SceneEntities = {
 		"light.office_top_light_white": {
 			state: "on",
-			brightness: 153,
+			brightness: 127,
 			color_temp_kelvin: 2700,
 		},
 		"light.office_top_light_rgb": {
