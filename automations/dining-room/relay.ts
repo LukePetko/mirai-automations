@@ -15,6 +15,8 @@ export default defineAutomation({
 			"light.dining_room_lights",
 		);
 
+		console.log(currentDiningRoomScene);
+
 		if (livingRoomScene === "focus" && currentDiningRoomScene?.state) {
 		}
 		await ctx.homeassistant.callService(
