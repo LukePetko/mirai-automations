@@ -35,14 +35,14 @@ export default async function officeFocus({
 		transition: 1,
 	});
 
-	Bun.sleep(150);
+	Bun.sleep(500);
 
 	await homeassistant.callService("scene", "apply", undefined, {
 		entities: deskLamps,
-		transition: 1,
+		transition: 3,
 	});
 
-	Bun.sleep(150);
+	Bun.sleep(500);
 
 	await homeassistant.callService(
 		"light",
@@ -53,6 +53,7 @@ export default async function officeFocus({
 		{
 			brightness: 127,
 			color_temp_kelvin: 2700,
+			transition: 3,
 		},
 	);
 }
