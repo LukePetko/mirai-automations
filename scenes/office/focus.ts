@@ -7,17 +7,17 @@ export default async function officeFocus({
 	console.log("[mirai] setting office scene to focus");
 	await kv.set("office:scene", "focus");
 
-	const entities: SceneEntities = {
-		"light.office_top_light_white": {
-			state: "on",
-			brightness: 127,
-			color_temp_kelvin: 2700,
-		},
+	const accent: SceneEntities = {
 		"light.office_top_light_rgb": {
 			state: "on",
 			brightness: 254,
 			xy_color: [0.369, 0.101],
 		},
+		"light.office_billy_led_main": { state: "on", brightness: 153 },
+		"select.office_billy_led_preset": { state: "Focus" },
+	};
+
+	const deskLamps: SceneEntities = {
 		"light.desk_lamp_color": {
 			state: "on",
 			brightness: 153,
@@ -28,12 +28,32 @@ export default async function officeFocus({
 			brightness: 153,
 			color_temp_kelvin: 2700,
 		},
-		"light.office_billy_led_main": { state: "on", brightness: 153 },
-		"select.office_billy_led_preset": { state: "Focus" },
 	};
 
 	await homeassistant.callService("scene", "apply", undefined, {
-		entities,
+		entities: accent,
 		transition: 1,
 	});
+
+	Bun.sleep(500);
+
+	await homeassistant.callService("scene", "apply", undefined, {
+		entities: deskLamps,
+		transition: 3,
+	});
+
+	Bun.sleep(500);
+
+	await homeassistant.callService(
+		"light",
+		"turn_on",
+		{
+			entity_id: ["light.office_top_light_white"],
+		},
+		{
+			brightness: 127,
+			color_temp_kelvin: 2700,
+			transition: 3,
+		},
+	);
 }
